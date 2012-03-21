@@ -39,21 +39,96 @@
 	</script>
 </head>
 <body>
+
+	<h1>jQuery RollOver Plugin</h1>
+
+	<h2>Authors</h2>
+
+	<p>Yangkun (yangkun7@gmail.com)</p>
+	<p><a href="http://guny.kr">http://guny.kr</a></p>
+
+	<h2>Download</h2>
+
+	<p>You can download this project in either <a href="https://github.com/yangkun/jquery-rollover/zipball/master">zip</a> or <a href="https://github.com/yangkun/jquery-rollover/tarball/master">tar</a> formats.</p>
+	<p>
+		<a href="https://github.com/yangkun/jquery-rollover/zipball/master"><img src="https://github.com/images/modules/download/zip.png" width="80" alt="zip"/></a>
+		<a href="https://github.com/yangkun/jquery-rollover/tarball/master"><img src="https://github.com/images/modules/download/tar.png" width="80" alt="tar"/></a>
+	</p>
+
+	<h2>GitHub</h2>
+
+	<p><a href="https://github.com/yangkun/jquery-rollover">https://github.com/yangkun/jquery-rollover</a></p>
+
+	<h2>Demo</h2>
+
+	<h3>#1: Basic</h3>
+
+<xmp>
 	<div id="demo1">
 		<img src="img/01.jpg" width="100"/>
 		<img src="img/02.jpg" width="100"/>
 		<img src="img/03.jpg" width="100"/>
 	</div>
+	<script type="text/javascript">
+	$('#demo1 img').rollover();
+	</script>
+</xmp>
+
+	<div id="demo1">
+		<img src="img/01.jpg" width="100"/>
+		<img src="img/02.jpg" width="100"/>
+		<img src="img/03.jpg" width="100"/>
+	</div>
+
+	<h3>#2: initial selected image &amp; no mouse leave eventt</h3>
+
+<xmp>
 	<div id="demo2">
 		<img src="img/01.jpg" width="100"/>
 		<img src="img/02.jpg" width="100" class="selected"/>
 		<img src="img/03.jpg" width="100"/>
 	</div>
+	<script type="text/javascript">
+		$('#demo2 img').rollover({
+			out:false
+		});
+	</script>
+</xmp>
+
+	<div id="demo2">
+		<img src="img/01.jpg" width="100"/>
+		<img src="img/02.jpg" width="100" class="selected"/>
+		<img src="img/03.jpg" width="100"/>
+	</div>
+
+
+
+	<h3>#3: set default image (auto select initial image when leave from container)</h3>
+<xmp>
 	<div id="demo3">
 		<img src="img/01.jpg" width="100"/>
 		<img src="img/02.jpg" width="100"/>
 		<img src="img/03.jpg" width="100" class="default"/>
 	</div>
+	<script type="text/javascript">
+	$('#demo3 img').rollover({
+		out:false,
+		container: $('#demo3')
+	});
+	</script>
+</xmp>
+	<div id="demo3">
+		<img src="img/01.jpg" width="100"/>
+		<img src="img/02.jpg" width="100"/>
+		<img src="img/03.jpg" width="100" class="default"/>
+	</div>
+
+
+
+
+
+	<h3>#4: layer feature</h3>
+<xmp>
 	<div id="demo4" style="position:relative; height:120px;">
 		<img src="img/01.jpg" width="100" class="default"/>
 		<img src="img/02.jpg" width="100"/>
@@ -63,13 +138,73 @@
 		<div class="desc">image no.2</div>
 		<div class="desc">image no.3</div>
 	</div>
+	<script type="text/javascript">
+	$('#demo4 img').rollover({
+		out:false,
+		layers: $('#demo4 .desc'),
+		container: $('#demo4'),
+		layerOn: function(img,layer,index) {
+			layer.css({position:'absolute', opacity:0, display:'block', top: 90, left: img.position().left}).animate({top:100, opacity:1});
+		},
+		layerOff: function(img,layer,index) {
+			layer.animate({top:90,opacity:0},'fast');
+		}
+	});
+	</script>
+</xmp>
+	<div id="demo4" style="position:relative; height:120px;">
+		<img src="img/01.jpg" width="100" class="default"/>
+		<img src="img/02.jpg" width="100"/>
+		<img src="img/03.jpg" width="100"/>
+
+		<div class="desc">image no.1</div>
+		<div class="desc">image no.2</div>
+		<div class="desc">image no.3</div>
+	</div>
+
+
+
+
+	<h3>#5: pick over image path from class</h3>
+<xmp>
 	<div id="demo5">
 		<img src="img/04_off.jpg" width="100" class="selected {over:'img/04_on.jpg'}"/>
 		<img src="img/05_off.jpg" width="100" class="{over:'img/05_on.jpg'}"/>
 	</div>
+	<script type="text/javascript">
+	$('#demo5 img').rollover({
+		out:false,
+		getOver: 'fromClass'
+	});
+	</script>
+</xmp>
+	<div id="demo5">
+		<img src="img/04_off.jpg" width="100" class="selected {over:'img/04_on.jpg'}"/>
+		<img src="img/05_off.jpg" width="100" class="{over:'img/05_on.jpg'}"/>
+	</div>
+
+
+
+	<h3>#6: pick over image path as replace</h3>
+<xmp>
 	<div id="demo6">
 		<img src="img/04_off.jpg" width="100"/>
 		<img src="img/05_off.jpg" width="100"/>
 	</div>
+	<script type="text/javascript">
+	$('#demo6 img').rollover({
+		getOver: 'replaceOn',
+		replaceOn: '_on',
+		replaceOff: '_off'
+	});
+	</script>
+</xmp>
+	<div id="demo6">
+		<img src="img/04_off.jpg" width="100"/>
+		<img src="img/05_off.jpg" width="100"/>
+	</div>
+
+
+
 </body>
 </html>
