@@ -17,12 +17,18 @@
 		var els = $(this),
 			opts = $.extend(true, {}, $.fn.rollover.defaults, options || {}),
 			selected = false,
-			defaultIndex = false;
+			defaultIndex = false,
+			layerMode = (opts.layers !== null);
 
 		return this.each(function(index) {
 			var $this = $(this);
 			$.data(this, 'originSrc', $this.attr('src'));
 			$.data(this, 'overSrc', $.fn.rollover.overs[opts.getOver]($this,opts));
+			if (layerMode) {
+				var $layer = $(opts.layers.get(index));
+				$.data(this, 'layer', $layer);
+				$layer.hide();
+			}
 
 			if ($this.hasClass(opts.selectedClass)) {
 				doOver(index);
@@ -51,29 +57,57 @@
 				var $img = $(els.get(i));
 				$img.attr('src', $.data(els.get(i),'overSrc'));
 				selected = i;
-				console.log('selected : ' + selected);
+				if (layerMode) opts.layerOn($img, $.data(els.get(i), 'layer'),i);
 			}
 		}
 		function doOut() {
 			if (selected !== false) {
 				els.get(selected).src = $.data(els.get(selected),'originSrc');
+				if (layerMode)  opts.layerOff($(els.get(selected)), $.data(els.get(selected), 'layer'),selected);
 				selected = false;
 			}
 		}
 	};
 	// default options
 	$.fn.rollover.defaults = {
-		getOver: 'replaceSuffix',
-		suffix: '_r',
+		getOver: 'addSuffix',
+		addSuffix: '_r',
+		replaceOff: '.',
+		replaceOn: '_r.',
+		fromClass: 'over',
 		selectedClass: 'selected',
 		defaultClass: 'default',
 		out: true,
-		container: null
+		container: null,
+		layers: null,
+		layerOn: function($img, $layer, index) {
+			$layer.show();
+		},
+		layerOff: function($img, $layer, index) {
+			$layer.hide();
+		}
 	};
-	// get over image
+
 	$.fn.rollover.overs = {
-		replaceSuffix: function($img,opts) {
-			return $img.attr('src').replace(/(\.[^\.]+)$/, opts.suffix + "$1");
+		// add suffix to original path's end
+		addSuffix: function($img,opts) {
+			return $img.attr('src').replace(/(\.[^\.]+)$/, opts.addSuffix + "$1");
+		},
+		replaceOn: function($img, opts) {
+			return $img.attr('src').replace(opts.replaceOff, opts.replaceOn);
+		},
+		// inspired by Metadata (jquery.metadata.js)
+		fromClass: function($img, opts) {
+			var m = /({.*})/.exec($img[0].className);
+			if(m) {
+				var data = m[1];
+				if(data.indexOf('{') < 0) data = '{' + data + '}';
+				data = eval('(' + data + ')');
+				return data[opts.fromClass];
+			} else {
+				console.log('specify class for over image path');
+				return $img.attr('src');
+			}
 		}
 	};
 })(jQuery);

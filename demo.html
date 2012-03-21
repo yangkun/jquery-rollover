@@ -4,17 +4,36 @@
 	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
 	<script type="text/javascript" src="jquery.rollover.js"></script>
 	<script type="text/javascript">
-	function bbb() {
-		console.log('bbb');
-	}
 	jQuery(function() {
-		$('#demo1 img').rollover({
+		$('#demo1 img').rollover();
+
+		$('#demo2 img').rollover({
 			out:false
 		});
 
-		$('#demo2 img').rollover({
+		$('#demo3 img').rollover({
 			out:false,
-			container: $('#demo2')
+			container: $('#demo3')
+		});
+		$('#demo4 img').rollover({
+			out:false,
+			layers: $('#demo4 .desc'),
+			container: $('#demo4'),
+			layerOn: function(img,layer,index) {
+				layer.css({position:'absolute', opacity:0, display:'block', top: 90, left: img.position().left}).animate({top:100, opacity:1});
+			},
+			layerOff: function(img,layer,index) {
+				layer.animate({top:90,opacity:0},'fast');
+			}
+		});
+		$('#demo5 img').rollover({
+			out:false,
+			getOver: 'fromClass'
+		});
+		$('#demo6 img').rollover({
+			getOver: 'replaceOn',
+			replaceOn: '_on',
+			replaceOff: '_off'
 		});
 	});
 	</script>
@@ -22,13 +41,35 @@
 <body>
 	<div id="demo1">
 		<img src="img/01.jpg" width="100"/>
-		<img src="img/02.jpg" width="100" class="selected"/>
+		<img src="img/02.jpg" width="100"/>
 		<img src="img/03.jpg" width="100"/>
 	</div>
 	<div id="demo2">
 		<img src="img/01.jpg" width="100"/>
+		<img src="img/02.jpg" width="100" class="selected"/>
+		<img src="img/03.jpg" width="100"/>
+	</div>
+	<div id="demo3">
+		<img src="img/01.jpg" width="100"/>
 		<img src="img/02.jpg" width="100"/>
 		<img src="img/03.jpg" width="100" class="default"/>
+	</div>
+	<div id="demo4" style="position:relative; height:120px;">
+		<img src="img/01.jpg" width="100" class="default"/>
+		<img src="img/02.jpg" width="100"/>
+		<img src="img/03.jpg" width="100"/>
+
+		<div class="desc">image no.1</div>
+		<div class="desc">image no.2</div>
+		<div class="desc">image no.3</div>
+	</div>
+	<div id="demo5">
+		<img src="img/04_off.jpg" width="100" class="selected {over:'img/04_on.jpg'}"/>
+		<img src="img/05_off.jpg" width="100" class="{over:'img/05_on.jpg'}"/>
+	</div>
+	<div id="demo6">
+		<img src="img/04_off.jpg" width="100"/>
+		<img src="img/05_off.jpg" width="100"/>
 	</div>
 </body>
 </html>
