@@ -1,0 +1,34 @@
+<!doctype html>
+<html>
+<head>
+	<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="jquery.rollover.js"></script>
+	<script type="text/javascript">
+	function bbb() {
+		console.log('bbb');
+	}
+	jQuery(function() {
+		$('#demo1 img').rollover({
+			out:false
+		});
+
+		$('#demo2 img').rollover({
+			out:false,
+			container: $('#demo2')
+		});
+	});
+	</script>
+</head>
+<body>
+	<div id="demo1">
+		<img src="img/01.jpg" width="100"/>
+		<img src="img/02.jpg" width="100" class="selected"/>
+		<img src="img/03.jpg" width="100"/>
+	</div>
+	<div id="demo2">
+		<img src="img/01.jpg" width="100"/>
+		<img src="img/02.jpg" width="100"/>
+		<img src="img/03.jpg" width="100" class="default"/>
+	</div>
+</body>
+</html>
